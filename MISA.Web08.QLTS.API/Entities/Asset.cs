@@ -15,12 +15,12 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// Mã tài sản
         /// </summary>
-        public string AssetCode { get; set; }
+        public string? AssetCode { get; set; }
 
         /// <summary>
         /// Tên tài sản
         /// </summary>
-        public string AssetName { get; set; }
+        public string? AssetName { get; set; }
 
         /// <summary>
         /// Giới tính
