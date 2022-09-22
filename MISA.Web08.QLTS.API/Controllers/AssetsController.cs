@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Dapper;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using MISA.Web08.QLTS.API.Entities;
 using MISA.Web08.QLTS.API.Entities.DTO;
 using MISA.Web08.QLTS.API.Enums;
+using MySqlConnector;
+using System.Data;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 
 namespace MISA.Web08.QLTS.API.Controllers
@@ -20,43 +23,99 @@ namespace MISA.Web08.QLTS.API.Controllers
         /// Cretaed by: NDDAT (19/09/2022)
         [HttpGet]
         [Route("")]
-        public List<Asset> GetAllAssets()
+        public IActionResult GetAllAssets()
         {
-            return new List<Asset>
+            try
             {
-                new Asset
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên stored procedure
+                string storedProcedureName = "Proc_asset_GetAll";
+
+                // Thực hiện gọi vào DB
+                var assets = mysqlConnection.Query<Asset>(
+                    storedProcedureName,
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (assets != null)
                 {
-                    AssetID = Guid.NewGuid(),
-                    AssetCode = "TS00001",
-                    AssetName = "Laptop ASUS FX504",
-                    Gender = Gender.Male,
-                },
-                new Asset
-                {
-                    AssetID = Guid.NewGuid(),
-                    AssetCode = "TS00002",
-                    AssetName = "Xe máy Honda",
-                    Gender = Gender.Female,
+                    return StatusCode(StatusCodes.Status200OK, assets);
                 }
-            };
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.SelectFailed,
+                        "Select from database return 0",
+                        "Không tìm thấy tài sản.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         /// <summary>
         /// Lấy 1 tài sản theo id
         /// </summary>
-        /// <param name="assetId">ID của tài sản vừa lấy</param>
+        /// <param name="assetId">ID của tài sản cần lấy</param>
         /// <returns>Đối tượng tài sản có ID được truyền vào</returns>
         /// Created by: NDDAT (19/09/2022)
         [HttpGet("{assetId}")]
-        public Asset GetAssetById([FromRoute] Guid assetId)
+        public IActionResult GetAssetById([FromRoute] Guid assetId)
         {
-            return new Asset
+            try
             {
-                AssetID = assetId,
-                AssetCode = "TS00001",
-                AssetName = "Laptop ASUS FX504",
-                Gender = Gender.Male,
-            };
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_Select";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                parameters.Add("v_fixed_asset_id", assetId);
+
+                // Thực hiện gọi vào DB để chạy procedure
+                var asset = mysqlConnection.QueryFirstOrDefault<Asset>(storedProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if(asset != null)
+                {
+                    return StatusCode(StatusCodes.Status201Created, asset);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.SelectFailed,
+                        "Select from database return 0",
+                        "Không tìm thấy tài sản.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         /// <summary>
@@ -70,22 +129,58 @@ namespace MISA.Web08.QLTS.API.Controllers
         /// <returns>Danh sách các tài sản sau khi chọn lọc</returns>
         /// Created by: NDDAT (19/09/2022)
         [HttpGet("filter")]
-        public PagingData FilterAssets([FromQuery] string keyword, [FromQuery] Guid departmentId, [FromQuery] Guid categoryId, [FromQuery] int limit, [FromQuery] int offset)
+        public IActionResult FilterAssets([FromQuery] string keyword, [FromQuery] Guid departmentId, [FromQuery] Guid categoryId, [FromQuery] int limit, [FromQuery] int offset)
         {
-            return new PagingData
+            try
             {
-                Data = new List<Asset>
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_GetPaging";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                parameters.Add("v_Offset", offset);
+                parameters.Add("v_Limit", limit);
+                parameters.Add("v_Sort", "");
+                parameters.Add("v_Where", $"fixed_asset_name LIKE \'%{keyword}%\'");
+
+                // Thực hiện gọi vào DB để chạy procedure
+                var multiAssets = mysqlConnection.QueryMultiple(storedProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if(multiAssets != null)
                 {
-                    new Asset
+                    var assets = multiAssets.Read<Asset>();
+                    var totalCount = multiAssets.Read<long>().Single();
+                    return StatusCode(StatusCodes.Status200OK, new PagingData<Asset>()
                     {
-                        AssetID = Guid.NewGuid(),
-                        AssetCode = "TS00001",
-                        AssetName = "Laptop ASUS FX504",
-                        Gender = Gender.Male,
-                    }
-                },
-                TotalCount = 2
-            };
+                        Data = assets.ToList(),
+                        TotalCount = totalCount,
+                    });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.SelectFailed,
+                        "Filter from database return 0",
+                        "Tìm các tài sản theo điều kiện thất bại.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         #endregion
@@ -101,14 +196,70 @@ namespace MISA.Web08.QLTS.API.Controllers
         [HttpPost]
         public IActionResult InsertAsset([FromBody] Asset asset)
         {
-            //return StatusCode(StatusCodes.Status201Created, Guid.NewGuid());
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
 
-            return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
-                QltsErrorCode.Exception,
-                "It was not possible to connect to the redis server(s)",
-                "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
-                "https://openapi.misa.com.vn/errorcode/e001",
-                HttpContext.TraceIdentifier));
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_Add";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                var assetID = Guid.NewGuid();
+                parameters.Add("v_fixed_asset_id", assetID);
+                parameters.Add("v_fixed_asset_code", asset.fixed_asset_code);
+                parameters.Add("v_fixed_asset_name", asset.fixed_asset_name);
+                parameters.Add("v_organization_id", "");
+                parameters.Add("v_organization_code", "");
+                parameters.Add("v_organization_name", "");
+                parameters.Add("v_department_id", asset.department_id);
+                parameters.Add("v_department_code", "");
+                parameters.Add("v_department_name", "");
+                parameters.Add("v_fixed_asset_category_id", asset.fixed_asset_category_id);
+                parameters.Add("v_fixed_asset_category_code", "");
+                parameters.Add("v_fixed_asset_category_name", "");
+                parameters.Add("v_cost", asset.cost);
+                parameters.Add("v_quantity", asset.quantity);
+                parameters.Add("v_depreciation_rate", asset.depreciation_rate);
+                parameters.Add("v_tracked_year", asset.tracked_year);
+                parameters.Add("v_life_time", asset.life_time);
+                parameters.Add("v_production_year", asset.production_year);
+                parameters.Add("v_active", asset.active);
+                parameters.Add("v_created_by", asset.created_by);
+                parameters.Add("v_modified_by", asset.modified_by);
+
+                // Thực hiện gọi vào DB để chạy procedure
+                var numberOfAffectedRows = mysqlConnection.Execute(storedProcedureName,
+                    parameters,
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (numberOfAffectedRows > 0)
+                {
+                    return StatusCode(StatusCodes.Status201Created, assetID);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.InsertFailed,
+                        "Insert to database return 0",
+                        "Thêm mới tài sản thất bại.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         #endregion
@@ -125,7 +276,71 @@ namespace MISA.Web08.QLTS.API.Controllers
         [HttpPut("{assetId}")]
         public IActionResult UpdateAsset([FromRoute] Guid assetId, [FromBody] Asset asset)
         {
-            return StatusCode(StatusCodes.Status200OK, assetId);
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_Update";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                parameters.Add("v_fixed_asset_id", assetId);
+                parameters.Add("v_fixed_asset_code", asset.fixed_asset_code);
+                parameters.Add("v_fixed_asset_name", asset.fixed_asset_name);
+                parameters.Add("v_organization_id", "");
+                parameters.Add("v_organization_code", "");
+                parameters.Add("v_organization_name", "");
+                parameters.Add("v_department_id", asset.department_id);
+                parameters.Add("v_department_code", "");
+                parameters.Add("v_department_name", "");
+                parameters.Add("v_fixed_asset_category_id", asset.fixed_asset_category_id);
+                parameters.Add("v_fixed_asset_category_code", "");
+                parameters.Add("v_fixed_asset_category_name", "");
+                parameters.Add("v_purchase_date", asset.purchase_date);
+                parameters.Add("v_cost", asset.cost);
+                parameters.Add("v_quantity", asset.quantity);
+                parameters.Add("v_depreciation_rate", asset.depreciation_rate);
+                parameters.Add("v_tracked_year", asset.tracked_year);
+                parameters.Add("v_life_time", asset.life_time);
+                parameters.Add("v_production_year", asset.production_year);
+                parameters.Add("v_active", asset.active);
+                parameters.Add("v_created_by", asset.created_by);
+                parameters.Add("v_created_date", asset.created_date);
+                parameters.Add("v_modified_by", asset.modified_by);
+
+                // Thực hiện gọi vào DB để chạy procedure
+                var numberOfAffectedRows = mysqlConnection.Execute(storedProcedureName,
+                    parameters,
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (numberOfAffectedRows > 0)
+                {
+                    return StatusCode(StatusCodes.Status201Created, asset);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.UpdateFailed,
+                        "Update to database return 0",
+                        "Cập nhật tài sản thất bại.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         #endregion
@@ -141,7 +356,49 @@ namespace MISA.Web08.QLTS.API.Controllers
         [HttpDelete("{assetId}")]
         public IActionResult DeleteAsset([FromRoute] Guid assetId)
         {
-            return StatusCode(StatusCodes.Status200OK, assetId);
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_Delete";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                parameters.Add("v_fixed_asset_id", assetId);
+
+                // Xử lý dữ liệu trả về
+                var numberOfAffectedRows = mysqlConnection.Execute(storedProcedureName,
+                    parameters,
+                    commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (numberOfAffectedRows > 0)
+                {
+                    return StatusCode(StatusCodes.Status201Created, assetId);
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.DeleteFailed,
+                        "Delete from database return 0",
+                        "Xóa tài sản thất bại.",
+                        "https://openapi.misa.com.vn/errorcode/e001",
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    "Catch an exception",
+                    "Có lỗi xảy ra! Vui lòng liên hệ với MISA.",
+                    "https://openapi.misa.com.vn/errorcode/e001",
+                    HttpContext.TraceIdentifier));
+            }
         }
 
         /// <summary>

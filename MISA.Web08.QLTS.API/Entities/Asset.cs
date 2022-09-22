@@ -10,88 +10,121 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
-        public Guid AssetID { get; set; }
+        public Guid fixed_asset_id { get; set; }
 
         /// <summary>
         /// Mã tài sản
         /// </summary>
-        public string? AssetCode { get; set; }
+        public string fixed_asset_code { get; set; }
 
         /// <summary>
         /// Tên tài sản
         /// </summary>
-        public string? AssetName { get; set; }
+        public string fixed_asset_name { get; set; }
 
         /// <summary>
-        /// Giới tính
+        /// ID tài sản
         /// </summary>
-        public Gender Gender { get; set; }
+        public string? organization_id { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? organization_code { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? organization_name { get; set; }
 
         /// <summary>
         /// ID phòng ban
         /// </summary>
-        public Guid DepartmentId { get; set; }
+        public Guid department_id { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? department_code { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? department_name { get; set; }
 
         /// <summary>
         /// ID loại tài sản
         /// </summary>
-        public Guid CategoryId { get; set; }
+        public Guid fixed_asset_category_id { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? fixed_asset_category_code { get; set; }
+
+        /// <summary>
+        /// ID tài sản
+        /// </summary>
+        public string? fixed_asset_category_name { get; set; }
 
         /// <summary>
         /// Ngày mua
         /// </summary>
-        public DateTime PurchaseDate { get; set; }
+        public DateTime purchase_date { get; set; }
 
         /// <summary>
         /// Giá tiền
         /// </summary>
-        public double Cost { get; set; }
+        public double cost { get; set; }
 
         /// <summary>
         /// Số lượng
         /// </summary>
-        public int Quantity { get; set; }
+        public int quantity { get; set; }
 
         /// <summary>
         /// Tỉ lệ hao mòn (%)
         /// </summary>
-        public double DepreciationRate { get; set; }
+        public double depreciation_rate { get; set; }
 
         /// <summary>
         /// Năm theo dõi
         /// </summary>
-        public int TrackedYear { get; set; }
+        public int tracked_year { get; set; }
 
         /// <summary>
         /// Số năm sử dụng
         /// </summary>
-        public int LifeTime { get; set; }
+        public int life_time { get; set; }
 
         /// <summary>
         /// Năm sử dụng
         /// </summary>
-        public DateTime ProductionYear { get; set; }
-
-        public Boolean Active { get; set; }
+        public int production_year { get; set; }
 
         /// <summary>
-        /// Ngày tạo
+        /// Còn hoạt động hay không
         /// </summary>
-        public DateTime CreatedDate { get; set; }
+        public Boolean active { get; set; }
 
         /// <summary>
         /// Người tạo
         /// </summary>
-        public string? CreatedBy { get; set; }
+        public string? created_by { get; set; }
 
         /// <summary>
-        /// Ngày sửa gần nhất
+        /// Ngày tạo
         /// </summary>
-        public DateTime ModifiedDate { get; set; }
+        public DateTime? created_date { get; set; }
 
         /// <summary>
         /// Người sửa gần nhất
         /// </summary>
-        public string? ModifiedBy { get; set; }
+        public string? modified_by { get; set; }
+
+        /// <summary>
+        /// Ngày sửa gần nhất
+        /// </summary>
+        public DateTime? modified_date { get; set; }
     }
 }
