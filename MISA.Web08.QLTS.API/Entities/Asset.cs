@@ -1,4 +1,5 @@
-﻿using MISA.Web08.QLTS.API.Enums;
+﻿using MISA.Web08.QLTS.API.Attributes;
+using MISA.Web08.QLTS.API.Enums;
 
 namespace MISA.Web08.QLTS.API.Entities
 {
@@ -10,6 +11,7 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
+        [PrimaryKey]
         public Guid fixed_asset_id { get; set; }
 
         /// <summary>
