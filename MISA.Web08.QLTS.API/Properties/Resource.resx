@@ -117,12 +117,76 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="DevMsg_DeleteFailed" xml:space="preserve">
+    <value>Insert to database return 0</value>
+    <comment>Message cho dev đọc khi Delete bản ghi trong database thất bại</comment>
+  </data>
   <data name="DevMsg_Exception" xml:space="preserve">
     <value>Catch an exception</value>
     <comment>Message cho dev đọc khi Gọi API gặp exception</comment>
   </data>
+  <data name="DevMsg_InsertFailed" xml:space="preserve">
+    <value>Insert to database return 0</value>
+    <comment>Message cho dev đọc khi Insert bản ghi vào database thất bại</comment>
+  </data>
+  <data name="DevMsg_SelectFailed" xml:space="preserve">
+    <value>Insert to database return 0</value>
+    <comment>Message cho dev đọc khi Select bản ghi trong database thất bại</comment>
+  </data>
+  <data name="DevMsg_UpdateFailed" xml:space="preserve">
+    <value>Insert to database return 0</value>
+    <comment>Message cho dev đọc khi Update bản ghi vào database thất bại</comment>
+  </data>
+  <data name="DevMsg_ValidateFailed" xml:space="preserve">
+    <value>One or more validation errors occurred</value>
+    <comment>Message cho dev đọc khi Validate dữ liệu đầu vào thất bại</comment>
+  </data>
+  <data name="MoreInfo_DeleteFailed" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/7</value>
+    <comment>Đường dẫn tới trang lỗi Delete bản ghi trong database thất bại</comment>
+  </data>
+  <data name="MoreInfo_Exception" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/1</value>
+    <comment>Đường dẫn tới trang lỗi Gọi API gặp exception</comment>
+  </data>
+  <data name="MoreInfo_InsertFailed" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/5</value>
+    <comment>Đường dẫn tới trang lỗi Insert bản ghi vào database thất bại</comment>
+  </data>
+  <data name="MoreInfo_SelectFailed" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/4</value>
+    <comment>Đường dẫn tới trang lỗi Select bản ghi trong database thất bại</comment>
+  </data>
+  <data name="MoreInfo_UpdateFailed" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/6</value>
+    <comment>Đường dẫn tới trang lỗi Update bản ghi vào database thất bại</comment>
+  </data>
+  <data name="MoreInfo_ValidateFailed" xml:space="preserve">
+    <value>https://openapi.misa.com.vn/errorcode/8</value>
+    <comment>Đường dẫn tới trang lỗi Validate dữ liệu đầu vào thất bại</comment>
+  </data>
+  <data name="UserMsg_DeleteFailed" xml:space="preserve">
+    <value>Thêm mới nhân viên thất bại</value>
+    <comment>Message cho user đọc khi Delete bản ghi trong database thất bại</comment>
+  </data>
   <data name="UserMsg_Exception" xml:space="preserve">
     <value>Có lỗi xảy ra! Vui lòng liên hệ với MISA.</value>
     <comment>Message cho user đọc khi Gọi API gặp exception</comment>
+  </data>
+  <data name="UserMsg_InsertFailed" xml:space="preserve">
+    <value>Thêm mới nhân viên thất bại</value>
+    <comment>Message cho user đọc khi Insert bản ghi vào database thất bại</comment>
+  </data>
+  <data name="UserMsg_SelectFailed" xml:space="preserve">
+    <value>Thêm mới nhân viên thất bại</value>
+    <comment>Message cho user đọc khi Select bản ghi trong database thất bại</comment>
+  </data>
+  <data name="UserMsg_UpdateFailed" xml:space="preserve">
+    <value>Thêm mới nhân viên thất bại</value>
+    <comment>Message cho user đọc khi Update bản ghi vào database thất bại</comment>
+  </data>
+  <data name="UserMsg_ValidateFailed" xml:space="preserve">
+    <value>Dữ liệu đầu vào không hợp lệ</value>
+    <comment>Message cho user đọc khi Validate dữ liệu đầu vào thất bại</comment>
   </data>
 </root>

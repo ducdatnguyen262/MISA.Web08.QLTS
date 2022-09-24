@@ -39,5 +39,10 @@
         /// Gọi vào DB để delete thất bại
         /// </summary>
         DeleteFailed = 7,
+
+        /// <summary>
+        /// Thông tin nhập vào không hợp lệ
+        /// </summary>
+        InvalidInput = 8,
     }
 }

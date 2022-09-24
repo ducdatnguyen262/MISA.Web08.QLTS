@@ -61,6 +61,15 @@ namespace MISA.Web08.QLTS.API.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert to database return 0.
+        /// </summary>
+        public static string DevMsg_DeleteFailed {
+            get {
+                return ResourceManager.GetString("DevMsg_DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Catch an exception.
         /// </summary>
         public static string DevMsg_Exception {
@@ -70,11 +79,146 @@ namespace MISA.Web08.QLTS.API.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert to database return 0.
+        /// </summary>
+        public static string DevMsg_InsertFailed {
+            get {
+                return ResourceManager.GetString("DevMsg_InsertFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert to database return 0.
+        /// </summary>
+        public static string DevMsg_SelectFailed {
+            get {
+                return ResourceManager.GetString("DevMsg_SelectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert to database return 0.
+        /// </summary>
+        public static string DevMsg_UpdateFailed {
+            get {
+                return ResourceManager.GetString("DevMsg_UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to One or more validation errors occurred.
+        /// </summary>
+        public static string DevMsg_ValidateFailed {
+            get {
+                return ResourceManager.GetString("DevMsg_ValidateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/7.
+        /// </summary>
+        public static string MoreInfo_DeleteFailed {
+            get {
+                return ResourceManager.GetString("MoreInfo_DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/1.
+        /// </summary>
+        public static string MoreInfo_Exception {
+            get {
+                return ResourceManager.GetString("MoreInfo_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/5.
+        /// </summary>
+        public static string MoreInfo_InsertFailed {
+            get {
+                return ResourceManager.GetString("MoreInfo_InsertFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/4.
+        /// </summary>
+        public static string MoreInfo_SelectFailed {
+            get {
+                return ResourceManager.GetString("MoreInfo_SelectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/6.
+        /// </summary>
+        public static string MoreInfo_UpdateFailed {
+            get {
+                return ResourceManager.GetString("MoreInfo_UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://openapi.misa.com.vn/errorcode/8.
+        /// </summary>
+        public static string MoreInfo_ValidateFailed {
+            get {
+                return ResourceManager.GetString("MoreInfo_ValidateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm mới nhân viên thất bại.
+        /// </summary>
+        public static string UserMsg_DeleteFailed {
+            get {
+                return ResourceManager.GetString("UserMsg_DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Có lỗi xảy ra! Vui lòng liên hệ với MISA..
         /// </summary>
         public static string UserMsg_Exception {
             get {
                 return ResourceManager.GetString("UserMsg_Exception", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm mới nhân viên thất bại.
+        /// </summary>
+        public static string UserMsg_InsertFailed {
+            get {
+                return ResourceManager.GetString("UserMsg_InsertFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm mới nhân viên thất bại.
+        /// </summary>
+        public static string UserMsg_SelectFailed {
+            get {
+                return ResourceManager.GetString("UserMsg_SelectFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thêm mới nhân viên thất bại.
+        /// </summary>
+        public static string UserMsg_UpdateFailed {
+            get {
+                return ResourceManager.GetString("UserMsg_UpdateFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dữ liệu đầu vào không hợp lệ.
+        /// </summary>
+        public static string UserMsg_ValidateFailed {
+            get {
+                return ResourceManager.GetString("UserMsg_ValidateFailed", resourceCulture);
             }
         }
     }
