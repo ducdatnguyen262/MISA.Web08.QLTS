@@ -131,7 +131,7 @@ namespace MISA.Web08.QLTS.API.Controllers
         /// <returns>Danh sách các tài sản sau khi chọn lọc</returns>
         /// Created by: NDDAT (19/09/2022)
         [HttpGet("filter")]
-        public IActionResult FilterAssets([FromQuery] string keyword, [FromQuery] Guid departmentId, [FromQuery] Guid categoryId, [FromQuery] int limit, [FromQuery] int offset)
+        public IActionResult FilterAssets([FromQuery] string? keyword, [FromQuery] Guid departmentId, [FromQuery] Guid categoryId, [FromQuery] int limit, [FromQuery] int offset)
         {
             try
             {
@@ -147,7 +147,8 @@ namespace MISA.Web08.QLTS.API.Controllers
                 parameters.Add("v_Offset", offset);
                 parameters.Add("v_Limit", limit);
                 parameters.Add("v_Sort", "");
-                parameters.Add("v_Where", $"fixed_asset_name LIKE \'%{keyword}%\'");
+                if (keyword != null) parameters.Add("v_Where", $"fixed_asset_name LIKE \'%{keyword}%\'");
+                else parameters.Add("v_Where", "");
 
                 // Thực hiện gọi vào DB để chạy procedure
                 var multiAssets = mysqlConnection.QueryMultiple(storedProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure);
@@ -474,7 +475,7 @@ namespace MISA.Web08.QLTS.API.Controllers
                 var queryList = new List<string>();
                 for (int i = 0; i < assetIdList.Count; i++)
                 {
-                    queryList.Add($"fixed_asset_id= \'{assetIdList[i]}\'");
+                    queryList.Add($"fixed_asset_id=\'{assetIdList[i]}\'");
                 }
                 string assetIds = string.Join(" OR ", queryList);
                 parameters.Add("v_fixed_asset_ids_query", assetIds);

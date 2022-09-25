@@ -27,17 +27,17 @@ namespace MISA.Web08.QLTS.API.Entities
         public string fixed_asset_name { get; set; }
 
         /// <summary>
-        /// ID tài sản
+        /// ID đơn vị
         /// </summary>
         public string? organization_id { get; set; }
 
         /// <summary>
-        /// ID tài sản
+        /// ID đơn vị
         /// </summary>
         public string? organization_code { get; set; }
 
         /// <summary>
-        /// ID tài sản
+        /// ID đơn vị
         /// </summary>
         public string? organization_name { get; set; }
 

@@ -9,7 +9,7 @@
     }
 
     /// <summary>
-    /// 
+    /// Attribure dùng để xác định 1 property không được để trống
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class IsNotNullOrEmptyAttribute : Attribute
