@@ -131,7 +131,7 @@ namespace MISA.Web08.QLTS.API.Controllers
         /// <returns>Danh sách các tài sản sau khi chọn lọc</returns>
         /// Created by: NDDAT (19/09/2022)
         [HttpGet("filter")]
-        public IActionResult FilterAssets([FromQuery] string? keyword, [FromQuery] Guid departmentId, [FromQuery] Guid categoryId, [FromQuery] int limit, [FromQuery] int offset)
+        public IActionResult FilterAssets([FromQuery] string? keyword, [FromQuery] Guid? departmentId, [FromQuery] Guid? categoryId, [FromQuery] int limit, [FromQuery] int page)
         {
             try
             {
@@ -144,11 +144,17 @@ namespace MISA.Web08.QLTS.API.Controllers
 
                 // Chuẩn bị tham số đầu vào cho procedure
                 var parameters = new DynamicParameters();
-                parameters.Add("v_Offset", offset);
+                parameters.Add("v_Offset", (page-1)*limit);
                 parameters.Add("v_Limit", limit);
                 parameters.Add("v_Sort", "");
-                if (keyword != null) parameters.Add("v_Where", $"fixed_asset_name LIKE \'%{keyword}%\'");
-                else parameters.Add("v_Where", "");
+
+                var whereConditions = new List<string>();
+                if (keyword != null) whereConditions.Add($"(fixed_asset_name LIKE \'%{keyword}%\' OR fixed_asset_name LIKE \'%{keyword}%\')");
+                if (departmentId != null) whereConditions.Add($"department_id LIKE \'{departmentId}\'");
+                if (categoryId != null) whereConditions.Add($"fixed_asset_category_id LIKE \'{categoryId}\'");
+                string whereClause = string.Join(" AND ", whereConditions);
+
+                parameters.Add("v_Where", whereClause);
 
                 // Thực hiện gọi vào DB để chạy procedure
                 var multiAssets = mysqlConnection.QueryMultiple(storedProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure);

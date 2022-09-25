@@ -17,13 +17,13 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// Mã tài sản
         /// </summary>
-        [IsNotNullOrEmpty("Mã nhân viên không được để trống")]
+        [IsNotNullOrEmpty("Mã tài sản không được để trống")]
         public string fixed_asset_code { get; set; }
 
         /// <summary>
         /// Tên tài sản
         /// </summary>
-        [IsNotNullOrEmpty("Tên nhân viên không được để trống")]
+        [IsNotNullOrEmpty("Tên tài sản không được để trống")]
         public string fixed_asset_name { get; set; }
 
         /// <summary>
@@ -49,6 +49,7 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
+        [IsNotNullOrEmpty("Mã bộ phận sử dụng không được để trống")]
         public string? department_code { get; set; }
 
         /// <summary>
@@ -64,6 +65,7 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
+        [IsNotNullOrEmpty("Mã loại tài sản không được để trống")]
         public string? fixed_asset_category_code { get; set; }
 
         /// <summary>
@@ -79,16 +81,19 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// Giá tiền
         /// </summary>
+        [IsNotNullOrEmpty("Nguyên giá không được để trống")]
         public double cost { get; set; }
 
         /// <summary>
         /// Số lượng
         /// </summary>
+        [IsNotNullOrEmpty("Số lượng không được để trống")]
         public int quantity { get; set; }
 
         /// <summary>
         /// Tỉ lệ hao mòn (%)
         /// </summary>
+        [IsNotNullOrEmpty("Tỉ lệ hao mòn không được để trống")]
         public double depreciation_rate { get; set; }
 
         /// <summary>
@@ -99,11 +104,13 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// Số năm sử dụng
         /// </summary>
+        [IsNotNullOrEmpty("Số năm sử dụng không được để trống")]
         public int life_time { get; set; }
 
         /// <summary>
         /// Năm sử dụng
         /// </summary>
+        [IsNotNullOrEmpty("Năm bắt đầu sử dụng không được để trống")]
         public int production_year { get; set; }
 
         /// <summary>
