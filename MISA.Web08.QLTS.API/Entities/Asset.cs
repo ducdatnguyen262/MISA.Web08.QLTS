@@ -49,7 +49,7 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
-        [IsNotNullOrEmpty("Mã bộ phận sử dụng không được để trống")]
+        //[IsNotNullOrEmpty("Mã bộ phận sử dụng không được để trống")]
         public string? department_code { get; set; }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// ID tài sản
         /// </summary>
-        [IsNotNullOrEmpty("Mã loại tài sản không được để trống")]
+        //[IsNotNullOrEmpty("Mã loại tài sản không được để trống")]
         public string? fixed_asset_category_code { get; set; }
 
         /// <summary>
@@ -110,8 +110,13 @@ namespace MISA.Web08.QLTS.API.Entities
         /// <summary>
         /// Năm sử dụng
         /// </summary>
-        [IsNotNullOrEmpty("Năm bắt đầu sử dụng không được để trống")]
         public int production_year { get; set; }
+
+        /// <summary>
+        /// Ngày bắt đầu sử dụng
+        /// </summary>
+        [IsNotNullOrEmpty("Ngày bắt đầu sử dụng không được để trống")]
+        public DateTime production_date { get; set; }
 
         /// <summary>
         /// Còn hoạt động hay không

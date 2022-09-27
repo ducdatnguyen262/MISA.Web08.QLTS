@@ -149,7 +149,7 @@ namespace MISA.Web08.QLTS.API.Controllers
                 parameters.Add("v_Sort", "");
 
                 var whereConditions = new List<string>();
-                if (keyword != null) whereConditions.Add($"(fixed_asset_name LIKE \'%{keyword}%\' OR fixed_asset_name LIKE \'%{keyword}%\')");
+                if (keyword != null) whereConditions.Add($"(fixed_asset_code LIKE \'%{keyword}%\' OR fixed_asset_name LIKE \'%{keyword}%\')");
                 if (departmentId != null) whereConditions.Add($"department_id LIKE \'{departmentId}\'");
                 if (categoryId != null) whereConditions.Add($"fixed_asset_category_id LIKE \'{categoryId}\'");
                 string whereClause = string.Join(" AND ", whereConditions);
