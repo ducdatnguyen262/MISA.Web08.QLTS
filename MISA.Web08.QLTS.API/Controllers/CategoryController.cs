@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MISA.Web08.QLTS.API.Enums;
+using MISA.Web08.QLTS.API.Properties;
+using Microsoft.AspNetCore.Mvc;
 using MISA.Web08.QLTS.API.Entities.DTO;
 using MISA.Web08.QLTS.API.Entities;
-using MISA.Web08.QLTS.API.Enums;
-using MISA.Web08.QLTS.API.Properties;
 using MySqlConnector;
 using Dapper;
 
@@ -10,16 +10,16 @@ namespace MISA.Web08.QLTS.API.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class DepartmentsController : ControllerBase
+    public class CategorysController : ControllerBase
     {
         /// <summary>
-        /// Lấy danh sách toàn bộ phòng ban
+        /// Lấy danh sách toàn bộ loại tài sản
         /// </summary>
-        /// <returns>Danh sách toàn bộ phòng ban</returns>
-        /// Cretaed by: NDDAT (25/09/2022)
+        /// <returns>Danh sách toàn bộ loại tài sản</returns>
+        /// Cretaed by: NDDAT (28/09/2022)
         [HttpGet]
         [Route("")]
-        public IActionResult GetAllDepartments()
+        public IActionResult GetAllCategorys()
         {
             try
             {
@@ -28,17 +28,17 @@ namespace MISA.Web08.QLTS.API.Controllers
                 var mysqlConnection = new MySqlConnection(connectionString);
 
                 // Khai báo tên stored procedure
-                string storedProcedureName = "Proc_department_GetAll";
+                string storedProcedureName = "Proc_category_GetAll";
 
                 // Thực hiện gọi vào DB
-                var departments = mysqlConnection.Query<Department>(
+                var categories = mysqlConnection.Query<Category>(
                     storedProcedureName,
                     commandType: System.Data.CommandType.StoredProcedure);
 
                 // Xử lý dữ liệu trả về
-                if (departments != null)
+                if (categories != null)
                 {
-                    return StatusCode(StatusCodes.Status200OK, departments);
+                    return StatusCode(StatusCodes.Status200OK, categories);
                 }
                 else
                 {
