@@ -394,6 +394,51 @@ namespace MISA.Web08.QLTS.API.Controllers
             }
         }
 
+        [HttpGet("nextCode")]
+        public IActionResult NextAssetCode()
+        {
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_GetNextCode";
+
+                // Xử lý dữ liệu trả về
+                var nextAssetCode = mysqlConnection.QueryFirstOrDefault<string>(storedProcedureName, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (nextAssetCode != null)
+                {
+                    return StatusCode(StatusCodes.Status200OK, new NextCode()
+                    {
+                        Code = nextAssetCode,
+                    });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.UpdateFailed,
+                        Resource.DevMsg_UpdateFailed,
+                        Resource.UserMsg_UpdateFailed,
+                        Resource.MoreInfo_UpdateFailed,
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    Resource.DevMsg_Exception,
+                    Resource.UserMsg_Exception,
+                    Resource.MoreInfo_Exception,
+                    HttpContext.TraceIdentifier));
+            }
+        }
+
         #endregion
 
         #region API Delete
