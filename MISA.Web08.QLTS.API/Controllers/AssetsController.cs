@@ -164,10 +164,19 @@ namespace MISA.Web08.QLTS.API.Controllers
                 {
                     var assets = multiAssets.Read<Asset>();
                     var totalCount = multiAssets.Read<long>().Single();
+                    var totalQuantity = multiAssets.Read<long>().Single();
+                    var totalCost = multiAssets.Read<double>().Single();
+                    var totalDepreciation = multiAssets.Read<double>().Single();
+                    var totalRemain = multiAssets.Read<double>().Single();
+
                     return StatusCode(StatusCodes.Status200OK, new PagingData<Asset>()
                     {
                         Data = assets.ToList(),
                         TotalCount = totalCount,
+                        TotalQuantity = totalQuantity,
+                        TotalCost = totalCost,
+                        TotalDepreciation = totalDepreciation,
+                        TotalRemain = totalRemain,
                     });
                 }
                 else
