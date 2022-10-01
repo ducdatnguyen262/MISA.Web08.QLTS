@@ -257,6 +257,7 @@ namespace MISA.Web08.QLTS.API.Controllers
                 parameters.Add("v_life_time", asset.life_time);
                 parameters.Add("v_production_year", asset.production_year);
                 parameters.Add("v_active", asset.active);
+                parameters.Add("v_depreciation_year", asset.depreciation_year);
                 parameters.Add("v_created_by", asset.created_by);
                 parameters.Add("v_modified_by", asset.modified_by);
 
@@ -358,6 +359,7 @@ namespace MISA.Web08.QLTS.API.Controllers
                 parameters.Add("v_life_time", asset.life_time);
                 parameters.Add("v_production_year", asset.production_year);
                 parameters.Add("v_active", asset.active);
+                parameters.Add("v_depreciation_year", asset.depreciation_year);
                 parameters.Add("v_created_by", asset.created_by);
                 parameters.Add("v_created_date", asset.created_date);
                 parameters.Add("v_modified_by", asset.modified_by);
@@ -371,51 +373,6 @@ namespace MISA.Web08.QLTS.API.Controllers
                 if (numberOfAffectedRows > 0)
                 {
                     return StatusCode(StatusCodes.Status200OK, asset);
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
-                        QltsErrorCode.UpdateFailed,
-                        Resource.DevMsg_UpdateFailed,
-                        Resource.UserMsg_UpdateFailed,
-                        Resource.MoreInfo_UpdateFailed,
-                        HttpContext.TraceIdentifier));
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
-                    QltsErrorCode.Exception,
-                    Resource.DevMsg_Exception,
-                    Resource.UserMsg_Exception,
-                    Resource.MoreInfo_Exception,
-                    HttpContext.TraceIdentifier));
-            }
-        }
-
-        [HttpGet("nextCode")]
-        public IActionResult NextAssetCode()
-        {
-            try
-            {
-                // Khởi tạo kết nối tới DB MySQL
-                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
-                var mysqlConnection = new MySqlConnection(connectionString);
-
-                // Khai báo tên prodecure Insert
-                string storedProcedureName = "Proc_asset_GetNextCode";
-
-                // Xử lý dữ liệu trả về
-                var nextAssetCode = mysqlConnection.QueryFirstOrDefault<string>(storedProcedureName, commandType: System.Data.CommandType.StoredProcedure);
-
-                // Xử lý dữ liệu trả về
-                if (nextAssetCode != null)
-                {
-                    return StatusCode(StatusCodes.Status200OK, new NextCode()
-                    {
-                        Code = nextAssetCode,
-                    });
                 }
                 else
                 {
@@ -556,7 +513,100 @@ namespace MISA.Web08.QLTS.API.Controllers
                     HttpContext.TraceIdentifier));
             }
         }
-        
+
         #endregion
+
+        /// <summary>
+        /// Sinh mã tài sản tiếp theo
+        /// </summary>
+        /// <returns>Mã tài sản tiếp theo</returns>
+        /// Cretaed by: NDDAT (01/10/2022)
+        [HttpGet("nextCode")]
+        public IActionResult NextAssetCode()
+        {
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_GetNextCode";
+
+                // Xử lý dữ liệu trả về
+                var nextAssetCode = mysqlConnection.QueryFirstOrDefault<string>(storedProcedureName, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                if (nextAssetCode != null)
+                {
+                    return StatusCode(StatusCodes.Status200OK, new NextCode()
+                    {
+                        Code = nextAssetCode,
+                    });
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, new ErrorResult(
+                        QltsErrorCode.UpdateFailed,
+                        Resource.DevMsg_UpdateFailed,
+                        Resource.UserMsg_UpdateFailed,
+                        Resource.MoreInfo_UpdateFailed,
+                        HttpContext.TraceIdentifier));
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    Resource.DevMsg_Exception,
+                    Resource.UserMsg_Exception,
+                    Resource.MoreInfo_Exception,
+                    HttpContext.TraceIdentifier));
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra trùng mã tài sản
+        /// </summary>
+        /// <returns>Mã tài sản nếu trùng</returns>
+        /// Cretaed by: NDDAT (01/10/2022)
+        [HttpGet("duplicateCode/{assetCode}")]
+        public IActionResult DuplicateAssetCode([FromRoute] string assetCode)
+        {
+            try
+            {
+                // Khởi tạo kết nối tới DB MySQL
+                string connectionString = "Server=localhost;Port=3306;Database=misa.web08.hcsn.nddat;Uid=root;Pwd=;";
+                var mysqlConnection = new MySqlConnection(connectionString);
+
+                // Khai báo tên prodecure Insert
+                string storedProcedureName = "Proc_asset_DuplicateCode";
+
+                // Chuẩn bị tham số đầu vào cho procedure
+                var parameters = new DynamicParameters();
+                parameters.Add("v_fixed_asset_code", assetCode);
+
+                // Thực hiện gọi vào DB để chạy procedure
+                int duplicates = mysqlConnection.QueryFirstOrDefault<int>(storedProcedureName, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                // Xử lý dữ liệu trả về
+                return StatusCode(StatusCodes.Status200OK, new DuplicateCode
+                {
+                    Duplicates = duplicates,
+                });
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new ErrorResult(
+                    QltsErrorCode.Exception,
+                    Resource.DevMsg_Exception,
+                    Resource.UserMsg_Exception,
+                    Resource.MoreInfo_Exception,
+                    HttpContext.TraceIdentifier));
+            }
+        }
     }
 }

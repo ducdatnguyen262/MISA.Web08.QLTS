@@ -124,6 +124,12 @@ namespace MISA.Web08.QLTS.API.Entities
         public Boolean active { get; set; }
 
         /// <summary>
+        /// Hao mòn năm
+        /// </summary>
+        [IsNotNullOrEmpty("Hao mòn năm không được để trống")]
+        public double depreciation_year { get; set; }
+
+        /// <summary>
         /// Người tạo
         /// </summary>
         public string? created_by { get; set; }

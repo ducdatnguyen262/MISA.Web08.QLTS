@@ -49,6 +49,11 @@ namespace MISA.Web08.QLTS.API.Entities.DTO
             TraceId = traceId;
         }
 
+        public ErrorResult(QltsErrorCode errorCode)
+        {
+            ErrorCode = errorCode;
+        }
+
         #endregion
     }
 }
